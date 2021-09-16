@@ -40,7 +40,11 @@ const Game = () => {
       state.game.letPlayerSuffer(Array.from(choices.values()))
       updateChoices({ choices: new Set() })
     } catch(error) {
-      toast.warn(error.message)
+      if(error.message === 'You lose') {
+        toast('Y o U lO st :-(')
+      } else {
+        toast.warn(error.message)
+      }
     }
     updateState({ game: state.game })
   }, [choices, state])
@@ -50,7 +54,11 @@ const Game = () => {
       state.game.letPlayerAttackWith(Array.from(choices.values()), captured)
       updateChoices({ choices: new Set() })
     } catch(error) {
-      toast.warn('You can\'t capture this one...')
+      if(error.message === 'You lose') {
+        toast('Y o U lO st :-(')
+      } else {
+        toast.warn('You can\'t capture this one...')
+      }
     }
     updateState({ game : state.game })
   }, [captured, choices, state])
@@ -60,7 +68,11 @@ const Game = () => {
       state.game.letPlayerSacrifice(Array.from(choices.values()), captured)
       updateChoices({ choices: new Set() })
     } catch(error) {
-      toast.warn(error.message)
+      if(error.message === 'You lose') {
+        toast('Y o U lO st :-(')
+      } else {
+        toast.warn(error.message)
+      }
     }
     updateState({ game : state.game })
   }, [captured, choices, state])

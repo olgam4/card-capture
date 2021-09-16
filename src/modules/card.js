@@ -8,6 +8,7 @@ class Card {
   static Joker = new Card(Suit.Joker, Value.None)
   static JokerA = new Card(Suit.Joker, new Value('COLOR'))
   static JokerB = new Card(Suit.Joker, new Value('GREY'))
+  static Jack = new Card(Suit.Joker, Value.Jack)
 
   constructor(suit, value) {
     this._suit = suit
