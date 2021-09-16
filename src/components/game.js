@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
+ import { toast } from 'react-toastify'
+
 import './game.css'
 
 import GameModule from '../modules/game.js'
@@ -25,9 +27,10 @@ const Game = () => {
   const capture = useCallback(() => {
     try {
       state.game.letPlayerAttackWith(Array.from(choices.values()), attacked)
-      updateState({ game : state.game })
     } catch(error) {
+      toast('You can\'t capture this one...')
     }
+    updateState({ game : state.game })
   }, [attacked, choices, state])
 
   const displayHand = useCallback(() => {

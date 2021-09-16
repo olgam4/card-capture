@@ -3,11 +3,13 @@ import Card from '../card.js'
 import Suit from '../suit.js'
 import Value from '../value.js'
 
-const CARDS_WITH_EIGHT_VALUE = [
+const CARDS_WITH_TWELVE_VALUE = [
   new Card(Suit.Hearts, Value.Two),
   new Card(Suit.Hearts, Value.Two),
   new Card(Suit.Hearts, Value.Two),
-  new Card(Suit.Hearts, Value.Two)
+  new Card(Suit.Hearts, Value.Two),
+  Card.Joker,
+  Card.Joker
 ]
 
 const CARDS_WITH_FOUR_VALUE = [
@@ -15,7 +17,6 @@ const CARDS_WITH_FOUR_VALUE = [
   new Card(Suit.Hearts, Value.Two)
 ]
 
-const CARD_WITH_TWO_VALUE = new Card(Suit.Clubs, Value.Two)
 const CARD_WITH_JACK_VALUE = new Card(Suit.Clubs, Value.Jack)
 
 const HEARTS = [
@@ -36,7 +37,24 @@ const HEARTS_AND_CLUB = [
 
 const HEART = new Card(Suit.Hearts, Value.Four)
 
+const CARDS_WITH_BEST_VALUE_JACK_OF_DIAMONDS = [
+  new Card(Suit.Hearts, Value.Three),
+  new Card(Suit.Hearts, Value.Five),
+  new Card(Suit.Hearts, Value.Three),
+  new Card(Suit.Diamonds, Value.Jack),
+  new Card(Suit.Hearts, Value.Three)
+]
+
 describe('Cards', () => {
+  describe('when finding highest valued card', () => {
+    it('should find it', () => {
+      const bestCard = Cards.findHighestValue(CARDS_WITH_BEST_VALUE_JACK_OF_DIAMONDS)
+
+      const JackOfDiamonds = new Card(Suit.Diamonds, Value.Jack)
+      expect(bestCard.isTheSameAs(JackOfDiamonds)).toBeTruthy()
+    })
+  })
+
   describe('when comparing', () => {
     describe('the suits', () => {
       describe('to find out if they are the same', () => {
@@ -62,7 +80,7 @@ describe('Cards', () => {
       describe('to find out if they are higher than another', () => {
         describe('when they are', () => {
           it('should say they are', () => {
-            const comparaison = Cards.areHigherValueThan(CARDS_WITH_EIGHT_VALUE, CARD_WITH_TWO_VALUE)
+            const comparaison = Cards.areHigherValueThan(CARDS_WITH_TWELVE_VALUE, CARD_WITH_JACK_VALUE)
 
             expect(comparaison).toBeTruthy()
           })

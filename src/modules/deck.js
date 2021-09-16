@@ -76,8 +76,8 @@ class Deck {
       cards.push(new Card(suit, Value.Three))
       cards.push(new Card(suit, Value.Four))
     })
-    cards.push(new Card(Suit.Joker, Value.None))
-    cards.push(new Card(Suit.Joker, Value.None))
+    cards.push(Card.Joker)
+    cards.push(Card.Joker)
     return new Deck(cards)
   }
 }
