@@ -1,0 +1,8 @@
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game > div {
+  margin: 100px
+}
