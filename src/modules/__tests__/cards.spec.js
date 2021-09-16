@@ -8,8 +8,8 @@ const CARDS_WITH_TWELVE_VALUE = [
   new Card(Suit.Hearts, Value.Two),
   new Card(Suit.Hearts, Value.Two),
   new Card(Suit.Hearts, Value.Two),
-  Card.Joker,
-  Card.Joker
+  Card.JokerA,
+  Card.JokerB
 ]
 
 const CARDS_WITH_FOUR_VALUE = [

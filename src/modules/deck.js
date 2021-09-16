@@ -50,6 +50,10 @@ class Deck {
     return this._cards[0].display()
   }
 
+  putAtTheBottom(card) {
+    this._cards.unshift(card)
+  }
+
   static _setupCardCaptureDungeon() {
     const cards = []
     const suits = [Suit.Hearts, Suit.Diamonds, Suit.Spades, Suit.Clubs]
@@ -76,9 +80,11 @@ class Deck {
       cards.push(new Card(suit, Value.Three))
       cards.push(new Card(suit, Value.Four))
     })
-    cards.push(Card.Joker)
-    cards.push(Card.Joker)
-    return new Deck(cards)
+    cards.push(Card.JokerA)
+    cards.push(Card.JokerB)
+    const cardCaptureDeck = new Deck(cards)
+    cardCaptureDeck.shuffle()
+    return cardCaptureDeck
   }
 }
 

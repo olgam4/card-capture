@@ -1,8 +1,6 @@
 .game {
   display: flex;
+  justify-content: space-around;
   flex-direction: row;
 }
 
-.game > div {
-  margin: 100px
-}

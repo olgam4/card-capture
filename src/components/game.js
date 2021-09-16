@@ -16,22 +16,63 @@ const initialChoicesState = {
 
 const Game = () => {
   const [state, updateState] = useState(initialGameState)
-  const [attacked, updateAttacked] = useState('first')
+  const [captured, updateCaptured] = useState()
   const [{ choices }, updateChoices] = useState(initialChoicesState)
 
   const draw = useCallback(() => {
     state.game.letPlayerDrawFromDeck()
-    updateState({ game : state.game })
+    updateState({ game: state.game })
   }, [state])
+
+  const fill = useCallback(() => {
+    state.game.fillPlayersHand()
+    updateState({ game: state.game })
+  }, [state])
+
+  const discard = useCallback(() => {
+    state.game.letPlayerDiscard(Array.from(choices.values()))
+    updateState({ game: state.game })
+    updateChoices({ choices: new Set() })
+  }, [choices, state])
+
+  const suffer = useCallback(() => {
+    try {
+      state.game.letPlayerSuffer(Array.from(choices.values()))
+      updateChoices({ choices: new Set() })
+    } catch(error) {
+      toast.warn(error.message)
+    }
+    updateState({ game: state.game })
+  }, [choices, state])
 
   const capture = useCallback(() => {
     try {
-      state.game.letPlayerAttackWith(Array.from(choices.values()), attacked)
+      state.game.letPlayerAttackWith(Array.from(choices.values()), captured)
+      updateChoices({ choices: new Set() })
     } catch(error) {
-      toast('You can\'t capture this one...')
+      toast.warn('You can\'t capture this one...')
     }
     updateState({ game : state.game })
-  }, [attacked, choices, state])
+  }, [captured, choices, state])
+
+  const sacrifice = useCallback(() => {
+    try {
+      state.game.letPlayerSacrifice(Array.from(choices.values()), captured)
+      updateChoices({ choices: new Set() })
+    } catch(error) {
+      toast.warn(error.message)
+    }
+    updateState({ game : state.game })
+  }, [captured, choices, state])
+
+  const advance = useCallback(() => {
+    state.game.advanceDungeon()
+    updateState({ game : state.game })
+  }, [state])
+
+  const displayDeckSize = useCallback(() => {
+    return state.game.displayDeckSize()
+  }, [state])
 
   const displayHand = useCallback(() => {
     return state.game.displayPlayerHand()
@@ -45,10 +86,14 @@ const Game = () => {
     return Object.values(state.game.displayCourtyard())
   }, [state])
 
+  const displayGraveyard = useCallback(() => {
+    return state.game.displayGraveyard()
+  }, [state])
+
   const places = ['first', 'second', 'third', 'fourth']
 
-  const onAttackedChange = useCallback((e) => {
-    updateAttacked(e.target.value)
+  const onCapturedChanged = useCallback((e) => {
+    updateCaptured(e.target.value)
   }, [])
 
   const onChoiceChange = useCallback((e) => {
@@ -68,9 +113,17 @@ const Game = () => {
         <button onClick={draw}>
           Draw
         </button>
+        <button onClick={fill}>
+          Fill
+        </button>
+        <button onClick={discard}>
+          Discard
+        </button>
+        <p>Deck: {displayDeckSize()}</p>
         {displayHand().map((card, i) => {
+          const key = `h-${card.display()}-${i}`
           return (
-            <div key={`h${i}`}>
+            <div key={key}>
               <input 
                 onChange={onChoiceChange}
                 value={card.display()}
@@ -95,18 +148,28 @@ const Game = () => {
         <button onClick={capture}>
           Capture
         </button>
-        <div onChange={onAttackedChange}>
+        <button onClick={advance}>
+          Advance
+        </button>
+        <button onClick={sacrifice}>
+          Sacrifice
+        </button>
+        <button onClick={suffer}>
+          Suffer
+        </button>
+        <div onChange={onCapturedChanged}>
           {displayCourtyard().map((card, i) => {
-            const checked = i === 0
+            const key = card === undefined ?
+              `c-undefined-${i}` :
+              `c-${card.display()}-${i}`
             const cd = card === undefined ?
-              (<div key={`c${i}`}v>none</div>) :
+              (<div key={key}v>none</div>) :
               (
-                <div key={`c${i}`}>
+                <div key={key}>
                   <input
-                    name='attacked'
+                    name='captured'
                     value={places[i]}
                     type='radio'
-                    defaultChecked={checked}
                   />{card.display()}
                 </div>
               )
@@ -116,6 +179,7 @@ const Game = () => {
       </div>
       <div>
         <h2>Graveyard</h2>
+        <p>{displayGraveyard()}</p>
       </div>
     </div>
   )

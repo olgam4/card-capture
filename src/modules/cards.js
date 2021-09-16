@@ -12,13 +12,14 @@ class Cards {
 
   static areTheSameSuitAs(cards, otherCard) {
     for(let k = 0; k < cards.length; k++) {
-      if (Cards._isTheSameSuitAsTheOtherCardButNotAJoker(cards[k], otherCard)) return false
+      if (Cards._isNotTheSameSuitAsTheOtherCardButNotAJoker(cards[k], otherCard)) return false
     }
     return true
   }
 
-  static _isTheSameSuitAsTheOtherCardButNotAJoker(card, otherCard) {
-    return card.isTheSameSuitAs(otherCard) === false && card.isTheSameSuitAs(Card.Joker) === false
+  static _isNotTheSameSuitAsTheOtherCardButNotAJoker(card, otherCard) {
+    if(card.isTheSameSuitAs(Card.Joker)) return false
+    return !card.isTheSameSuitAs(otherCard)
   }
 
 
@@ -26,18 +27,18 @@ class Cards {
     let cardsWithoutJokers = [...cards]
 
     const firstJokerIndex = cardsWithoutJokers.findIndex(card => {
-      return card.isTheSameAs(Card.Joker)
+      return card.isTheSameAs(Card.JokerA)
     })
-    if(firstJokerIndex) {
+    if(firstJokerIndex >= 0) {
       cardsWithoutJokers.splice(firstJokerIndex, 1)
       const bestCard = Cards.findHighestValue(cardsWithoutJokers)
       cardsWithoutJokers = [...cardsWithoutJokers, bestCard]
     }
 
     const secondJokerIndex = cardsWithoutJokers.findIndex(card => {
-      return card.isTheSameAs(Card.Joker)
+      return card.isTheSameAs(Card.JokerB)
     })
-    if(secondJokerIndex) {
+    if(secondJokerIndex >= 0) {
       cardsWithoutJokers.splice(secondJokerIndex, 1)
       const bestCard = Cards.findHighestValue(cardsWithoutJokers)
       cardsWithoutJokers = [...cardsWithoutJokers, bestCard]

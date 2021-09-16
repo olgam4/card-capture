@@ -24,7 +24,7 @@ describe('Game', () => {
     it('should make the player draw from the deck', () => {
       cut.letPlayerDrawFromDeck()
 
-      expect(playerMock.drawFrom).toHaveBeenCalledWith(expect.any(Deck), expect.any(Number))
+      expect(playerMock.draw).toHaveBeenCalledWith(expect.any(Number))
     })
   })
 

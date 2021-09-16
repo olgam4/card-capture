@@ -6,6 +6,8 @@ class Card {
   _value
 
   static Joker = new Card(Suit.Joker, Value.None)
+  static JokerA = new Card(Suit.Joker, new Value('COLOR'))
+  static JokerB = new Card(Suit.Joker, new Value('GREY'))
 
   constructor(suit, value) {
     this._suit = suit
@@ -32,8 +34,10 @@ class Card {
 
   static fromDisplay(displayString) {
     const elements = displayString.split(' ')
-    const value = new Value(parseInt(elements[0]))
     const suit = new Suit(elements[2])
+    const value = suit.name === Suit.Joker.name ?
+      new Value(elements[0]) :
+      new Value(parseInt(elements[0]))
 
     return new Card(suit, value)
   }
@@ -56,6 +60,10 @@ class Card {
 
   isTheSameAs(otherCard) {
     return this.isTheSameSuitAs(otherCard) && this.isTheSameValueAs(otherCard)
+  }
+
+  copy() {
+    return new Card(this._suit, this._value)
   }
 }
 
